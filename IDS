@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> graph[100];
+
+bool DLS(int node, int goal, int depth)
+{
+    if (node == goal)
+    {
+        cout << "Goal Found: " << node << endl;
+        return true;
+    }
+
+    if (depth <= 0)
+        return false;
+
+    for (int neighbor : graph[node])
+    {
+        if (DLS(neighbor, goal, depth - 1))
+            return true;
+    }
+
+    return false;
+}
+
+void IDS(int start, int goal, int maxDepth)
+{
+    for (int i = 0; i <= maxDepth; i++)
+    {
+        if (DLS(start, goal, i))
+        {
+            cout << "Found at Depth: " << i << endl;
+            return;
+        }
+    }
+
+    cout << "Goal Not Found" << endl;
+}
+
+int main()
+{
+    int n, e;
+    cin >> n >> e;
+
+    for (int i = 0; i < e; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    int start, goal, maxDepth;
+    cin >> start >> goal >> maxDepth;
+
+    IDS(start, goal, maxDepth);
+
+    return 0;
+}
